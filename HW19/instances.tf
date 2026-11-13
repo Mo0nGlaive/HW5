@@ -13,7 +13,7 @@ resource "aws_key_pair" "main" {
   public_key = file(var.public_key_path)
 }
 
-resource "aws_instance" "public" {
+resource "aws_instance" "public_ec2" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.subnet_public.id
@@ -23,10 +23,11 @@ resource "aws_instance" "public" {
 
   tags = {
     Name = "public-ec2"
+    Owner = "tophado1997@gmail.com"
   }
 }
 
-resource "aws_instance" "private" {
+resource "aws_instance" "private_ec2" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.subnet_private.id
@@ -37,5 +38,6 @@ resource "aws_instance" "private" {
 
   tags = {
     Name = "private-ec2"
+    Owner = "tophado1997@gmail.com"
   }
 }
