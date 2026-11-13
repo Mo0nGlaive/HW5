@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "VPC ID"
-  value       = aws_vpc.vpc.vpc_id
+  value       = aws_vpc.vpc.id
 }
 
 output "vpc_cidr_block" {
@@ -36,7 +36,7 @@ output "internet_gateway" {
 output "nat_gateway" {
   value = {
     id         = aws_nat_gateway.nat.id
-    subnet_id  = aws_nat_gateway.igw.subnet_id
+    subnet_id  = aws_nat_gateway.nat.subnet_id
     public_eip = aws_eip.eip.id
     public_ip  = aws_eip.eip.public_ip
   }
@@ -44,11 +44,11 @@ output "nat_gateway" {
 
 output "public_route_table" {
   value = {
-    id         = aws_route_table.public_rt.id
-    vpc_id     = aws_route_table.public_rt.vpc_id
-    subnet_id  = aws_subnet.subnet_public.id
+    id          = aws_route_table.public_rt.id
+    vpc_id      = aws_route_table.public_rt.vpc_id
+    subnet_id   = aws_subnet.subnet_public.id
     destination = "0.0.0.0/0"
-    target     = aws_internet_gateway.igw.id
+    target      = aws_internet_gateway.igw.id
   }
 }
 
@@ -64,21 +64,21 @@ output "private_route_table" {
 
 output "public_security_group" {
   value = {
-    id          = aws_security_group.public_sg.id
-    name        = aws_security_group.public_sg.name
-    vpc_id      = aws_security_group.public_sg.vpc_id
-    ingress     = aws_security_group.public_sg.ingress
-    egress      = aws_security_group.public_sg.egress
+    id      = aws_security_group.public_sg.id
+    name    = aws_security_group.public_sg.name
+    vpc_id  = aws_security_group.public_sg.vpc_id
+    ingress = aws_security_group.public_sg.ingress
+    egress  = aws_security_group.public_sg.egress
   }
 }
 
 output "private_security_group" {
   value = {
-    id          = aws_security_group.private_sg.id
-    name        = aws_security_group.private_sg.name
-    vpc_id      = aws_security_group.private_sg.vpc_id
-    ingress     = aws_security_group.private_sg.ingress
-    egress      = aws_security_group.private_sg.egress
+    id      = aws_security_group.private_sg.id
+    name    = aws_security_group.private_sg.name
+    vpc_id  = aws_security_group.private_sg.vpc_id
+    ingress = aws_security_group.private_sg.ingress
+    egress  = aws_security_group.private_sg.egress
   }
 }
 

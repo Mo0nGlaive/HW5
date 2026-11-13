@@ -51,7 +51,7 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.subnet_private.id
+  subnet_id     = aws_subnet.subnet_public.id
 
   tags = {
     Name  = "hw19_nat"
@@ -106,7 +106,7 @@ resource "aws_security_group" "public_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.admin_ip]
   }
 
   egress {
@@ -130,7 +130,7 @@ resource "aws_security_group" "private_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.subnet_private.cidr_block]
+    cidr_blocks = [aws_subnet.subnet_public.cidr_block]
   }
 
   egress {

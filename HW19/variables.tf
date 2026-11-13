@@ -5,9 +5,9 @@ variable "instance_type" {
 }
 
 variable "admin_ip" {
-  type        = string
+  type = string
 }
 
 variable "public_key_path" {
-  type        = string
+  type = string
 }
