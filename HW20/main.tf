@@ -11,13 +11,40 @@ resource "aws_vpc" "vpc" {
 
 resource "aws_subnet" "public" {
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = "10.0.0.0/16"
   availability_zone = "eu-central-1a"
 
   tags = {
     Name  = "hw20_public"
     Owner = "tophado1997@gmail.com"
   }
+}
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
+  
+  tags = {
+    Name  = "hw20_public"
+    Owner = "tophado1997@gmail.com"
+  }
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name  = "hw20_public"
+    Owner = "tophado1997@gmail.com"
+  } 
+}
+
+resource "aws_route_table_association" "public" {
+  subnet_id = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
 }
 
 data "aws_ami" "ubuntu" {
@@ -28,7 +55,7 @@ data "aws_ami" "ubuntu" {
     name = "name"
 
     values = [
-      "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+      "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"
     ]
   }
 
@@ -45,12 +72,16 @@ module "security_group" {
   list_of_open_ports = var.list_of_open_ports
 }
 
+resource "aws_key_pair" "main" {
+  key_name = "ubuntu-work"
+  public_key = file(var.public_key_path)
+}
 
 resource "aws_instance" "nginx" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-
   subnet_id = aws_subnet.public.id
+  key_name = aws_key_pair.main.key_name
 
   vpc_security_group_ids = [
     module.security_group.security_group_id
