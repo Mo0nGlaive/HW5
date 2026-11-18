@@ -20,6 +20,29 @@ resource "aws_subnet" "public" {
   }
 }
 
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name  = "hw20_igw"
+    Owner = "tophado1997@gmail.com"
+  }
+}
+
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name  = "hw20_public_rt"
+    Owner = "tophado1997@gmail.com"
+  }
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"]
@@ -28,7 +51,7 @@ data "aws_ami" "ubuntu" {
     name = "name"
 
     values = [
-      "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"
+      "ubuntu-pro-server/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-pro-server-*"
     ]
   }
 
@@ -45,6 +68,10 @@ module "security_group" {
   list_of_open_ports = var.list_of_open_ports
 }
 
+resource "aws_key_pair" "main" {
+  key_name   = "terraform-vpc-key"
+  public_key = file(var.public_key_path)
+}
 
 resource "aws_instance" "nginx" {
   ami           = data.aws_ami.ubuntu.id
@@ -56,9 +83,9 @@ resource "aws_instance" "nginx" {
     module.security_group.security_group_id
   ]
 
+  key_name                    = aws_key_pair.main.key_name
   associate_public_ip_address = true
-
-  user_data = <<-EOF
+  /*user_data = <<-EOF
     #!/bin/bash
     set -e
 
@@ -69,7 +96,7 @@ resource "aws_instance" "nginx" {
     systemctl start nginx
   EOF
 
-  user_data_replace_on_change = true
+  user_data_replace_on_change = true*/
 
   tags = {
     Name = "terraform-nginx-server"
