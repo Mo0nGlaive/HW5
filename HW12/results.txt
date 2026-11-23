@@ -1,0 +1,125 @@
+
+    GET ALL
+    Status: 200
+    []
+    POST 1
+    Status: 201
+    {
+    "age": "20",
+    "first_name": "Іван",
+    "id": "1",
+    "last_name": "Іванов"
+}
+    POST 2
+    Status: 201
+    {
+    "age": "21",
+    "first_name": "Степан",
+    "id": "2",
+    "last_name": "Степанов"
+}
+    POST 3
+    Status: 201
+    {
+    "age": "19",
+    "first_name": "Василь",
+    "id": "3",
+    "last_name": "Васильєв"
+}
+    GET ALL
+    Status: 200
+    [
+    {
+        "age": "20",
+        "first_name": "Іван",
+        "id": "1",
+        "last_name": "Іванов"
+    },
+    {
+        "age": "21",
+        "first_name": "Степан",
+        "id": "2",
+        "last_name": "Степанов"
+    },
+    {
+        "age": "19",
+        "first_name": "Василь",
+        "id": "3",
+        "last_name": "Васильєв"
+    }
+]
+    PATCH student 2
+    Status: 200
+    {
+    "age": "30",
+    "first_name": "Степан",
+    "id": "2",
+    "last_name": "Степанов"
+}
+    GET student 2
+    Status: 200
+    {
+    "age": "30",
+    "first_name": "Степан",
+    "id": "2",
+    "last_name": "Степанов"
+}
+    PUT student 3
+    Status: 200
+    {
+    "age": "25",
+    "first_name": "Андрій",
+    "id": "3",
+    "last_name": "Коваленко"
+}
+    GET student 3
+    Status: 200
+    {
+    "age": "25",
+    "first_name": "Андрій",
+    "id": "3",
+    "last_name": "Коваленко"
+}
+    GET ALL
+    Status: 200
+    [
+    {
+        "age": "20",
+        "first_name": "Іван",
+        "id": "1",
+        "last_name": "Іванов"
+    },
+    {
+        "age": "30",
+        "first_name": "Степан",
+        "id": "2",
+        "last_name": "Степанов"
+    },
+    {
+        "age": "25",
+        "first_name": "Андрій",
+        "id": "3",
+        "last_name": "Коваленко"
+    }
+]
+    DELETE student 1
+    Status: 200
+    {
+    "message": "Student deleted successfully"
+}
+    GET ALL
+    Status: 200
+    [
+    {
+        "age": "30",
+        "first_name": "Степан",
+        "id": "2",
+        "last_name": "Степанов"
+    },
+    {
+        "age": "25",
+        "first_name": "Андрій",
+        "id": "3",
+        "last_name": "Коваленко"
+    }
+]
