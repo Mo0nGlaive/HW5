@@ -1,0 +1,47 @@
+
+---
+- name: Install Docker and deploy Nginx
+  hosts: nginx
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name:
+          - docker.io
+          - docker-compose-v2
+        state: present
+
+    - name: Start and enable Docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Create Nginx directory
+      ansible.builtin.file:
+        path: /opt/nginx
+        state: directory
+        mode: "0755"
+
+    - name: Copy Docker Compose configuration
+      ansible.builtin.copy:
+        src: ../docker/docker-compose.yml
+        dest: /opt/nginx/docker-compose.yml
+        mode: "0644"
+
+    - name: Pull Nginx Docker image
+      ansible.builtin.command:
+        cmd: docker compose pull
+        chdir: /opt/nginx
+
+    - name: Start Nginx using Docker Compose
+      ansible.builtin.command:
+        cmd: docker compose up -d
+        chdir: /opt/nginx
