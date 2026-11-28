@@ -1,7 +1,7 @@
 
 ---
 - name: Install Docker and deploy Nginx
-  hosts: nginx
+  hosts: master
   become: true
   gather_facts: true
 

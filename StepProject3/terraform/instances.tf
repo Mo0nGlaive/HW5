@@ -61,7 +61,7 @@ resource "local_file" "ansible_inventory" {
     "${path.module}/inventory.tftpl",
     {
       master_public_ip  = aws_instance.master.public_ip
-      worker_public_ip  = aws_spot_instance_request.worker.public_ip
+      worker_private_ip  = aws_spot_instance_request.worker.private_ip
       master_private_ip = aws_instance.master.private_ip
       private_key_path  = pathexpand(var.private_key_path)
     }

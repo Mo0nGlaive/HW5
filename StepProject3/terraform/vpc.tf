@@ -1,5 +1,5 @@
 data "http" "my_ip" {
-  url = "https://amazonaws.com"
+  url = "https://checkip.amazonaws.com"
 }
 
 resource "aws_vpc" "vpc" {
